@@ -23,7 +23,7 @@ The interface shows the exact catalog match, quantities, calculated amount, Need
 
 ## Host for teacher access
 
-Import this **private** repository into [Streamlit Community Cloud](https://share.streamlit.io/) and select the root-level `streamlit_app.py` as the entry point. Share the resulting `streamlit.app` URL according to the app's sharing settings. A GitHub repository link alone does not launch the app.
+Import this **public** repository into [Streamlit Community Cloud](https://share.streamlit.io/) and select the root-level `streamlit_app.py` as the entry point. Share the resulting `streamlit.app` URL according to the app's sharing settings. A GitHub repository link alone does not launch the app.
 
 To use OpenRouter extraction, add `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` in Streamlit Secrets. Never commit a real key. A publicly accessible app can use API credits and reveal prices through its quotes, so limit access when possible. The original `gradio.live` 504 tunnel errors do not affect Streamlit hosting.
 
