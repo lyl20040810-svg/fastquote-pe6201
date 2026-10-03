@@ -1,43 +1,32 @@
-# FastQuote Teacher Demo
+# FastQuote PE6201
 
-This repository contains the functional FastQuote application and the real,
-73-row DIN933 A2 price-list subset. It is intended for deployment from a private
-GitHub repository to Streamlit Community Cloud. The web app can then be shared
-with the teacher using its fixed `streamlit.app` URL. Do not change the repository
-to public unless you also intend to publish the price data.
+FastQuote is a review-only quotation assistant for fastener sales. A customer supplies a diameter, length and quantity in pieces, boxes or cartons; they do not need to know the catalog standard. The system extracts those fields, matches an exact SKU in a verified 73-row DIN933 A2 price-list subset, calculates the quote with deterministic Python rules, and drafts an English reply for a salesperson to review. It never sends the reply or approves an order automatically.
 
-## Contents
+## Repository contents
 
-- `streamlit_app.py`, `fastquote/`, `data/`: hosted teacher demo.
-- `project/`: local Python app, tests, evaluation scripts and datasets.
-- `submission/`: Colab notebook, price-list spreadsheet and operation manual.
+- `streamlit_app.py`, `fastquote/`, `data/`: hosted teacher demo, including the real verified price data.
+- `FastQuote_Project_Source.zip`: local Python app, unit tests, evaluation scripts and development datasets.
+- `FastQuote_Colab.ipynb`: personal Colab notebook; its embedded page is not a public demo URL.
+- `FastQuote_Price_List.xlsx`: readable copy of the catalog subset.
 
-The final written report and narrated video are not yet included; add them to
-`submission/` only after they are finished and reviewed.
+The final written report and narrated video are separate deliverables and are not yet included here.
 
-## Deploy
+## Try the demo
 
-1. In [Streamlit Community Cloud](https://share.streamlit.io/), create an app
-   from that repository, selecting `streamlit_app.py` as the entry point.
-2. For rules-only demonstration, no API secret is required. To demonstrate
-   OpenRouter extraction, set these app secrets in Advanced settings:
+Install with `python -m pip install -r requirements.txt`, then run `streamlit run streamlit_app.py` from the repository root. Rules mode needs no API key. Suggested inputs:
 
-   ```toml
-   OPENROUTER_API_KEY = "your-key-here"
-   OPENROUTER_MODEL = "openai/gpt-4.1-mini"
-   ```
+- `M16x50, 2 cartons` for a normal quote.
+- `M20x80, 10 cartons` for a quote that needs manager approval.
+- `M16 bolts, 3 boxes` for a request that needs clarification.
 
-   Enter the real key only in Streamlit's Secrets field, never in a repository
-   file or screenshot.
-3. In the app's Sharing settings, grant the teacher access or make the app
-   public. Send the generated `https://...streamlit.app` URL.
+The interface shows the exact catalog match, quantities, calculated amount, Need Approval = YES/NO, and a customer reply draft. Monetary values and the 10% internal approval gate are calculated by code, not by the language model. A salesperson must verify the result before any customer communication.
 
-The 504 errors from `gradio.live` do not affect this hosted version. OpenRouter
-is only used when a key is configured; the pricing rules are always local and
-deterministic. A public app with an OpenRouter key can receive requests from
-any visitor, so use private sharing when possible.
+## Host for teacher access
 
-## Local check
+Import this **private** repository into [Streamlit Community Cloud](https://share.streamlit.io/) and select the root-level `streamlit_app.py` as the entry point. Share the resulting `streamlit.app` URL according to the app's sharing settings. A GitHub repository link alone does not launch the app.
 
-Run `python -m pip install -r requirements.txt` and then
-`streamlit run streamlit_app.py` from this folder.
+To use OpenRouter extraction, add `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` in Streamlit Secrets. Never commit a real key. A publicly accessible app can use API credits and reveal prices through its quotes, so limit access when possible. The original `gradio.live` 504 tunnel errors do not affect Streamlit hosting.
+
+## Scope and evidence
+
+The source catalog contains 73 rows transcribed and checked from the supplied price-list photos. Rows with unclear packaging were excluded. The project source includes 11 automated tests and a 15-case development set. Final blind evaluation results should be reported separately from development results; extraction accuracy, automatic coverage, false flag rate and pricing correctness are distinct measures.
